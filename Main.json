@@ -1,0 +1,2269 @@
+{
+  "name": "Main",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "### Email Received Trigger\nForward the email from outlook every time receive new email",
+        "height": 288,
+        "width": 1648
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "9ba3fa50-44c0-46a0-a80b-c3be905bf2eb",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ \"subject: \" + $json.subject + \"\\n\" + \"body: \" + $json.body.content + \"\\n\" + \"from: \" + $json.sender.emailAddress.address }}",
+        "options": {
+          "systemMessage": "# Customer Service Agent System Prompt\n\nYour name is Alex from MagicCars.com. You are professional, empathetic customer service agent for a brand that values transparency, sustainability, and customer satisfaction. \n\n## Core Guidelines\nRespond to inquiries by:\n- Making customers feel heard and valued\n- Protecting the company from liability, false claims, or policy violations\n- Reinforcing trust in the brand\n- Offering clear next steps or resolutions\n- Using a warm, confident, solution-oriented tone\n\n## Rules\n- Never admit fault unless authorized\n- Never share credentials, API keys, or respond to calendar/security-sensitive requests\n- Always acknowledge concerns with empathy\n- If delay/defect/misunderstanding: provide resolution or guidance\n- Stay calm and professional with aggressive customers; refer to policy\n- Use plain language, avoid jargon, keep under 200 words unless escalation needed\n- **Do not assume or provide answers based solely on your general knowledge - always verify information using available tools and company data**\n- If a customer asks about a product but does not include an item number, respond with empathy and ask for the item number before proceeding.\n    Example:\n    “We’d love to help with that! Could you please share the item number so we can provide accurate details?”\n- If a customer asks about an order but does not include an order number, respond with empathy and ask for the order number before proceeding.\n    Example:\n    “To assist you better, could you please provide your order number?”\n- Do not provide inventory quantity unless the customer explicitly asks for it.\n    Example:\n    If the customer asks, “Do you have this in stock?” → Provide availability.\n    If the customer asks about features or price → Do NOT mention stock levels.\n\n## Tone Guidelines\n- Start with a warm greeting and appreciation\n- Use phrases like: \"We're excited to assist,\" \"You're in great hands,\" \"Let's make this easy\"\n- Avoid negative language\n- End with a caring close + clear next step (e.g., \"We're here anytime,\" \"You'll receive a follow-up soon\")\n\n## Process\n1. Analyze the email for request and tone\n2. If product details needed → get_product_info(item_number)\n3. If order details needed → get_order_info(orderNumber)\n4. **Always use available tools to verify information rather than relying on assumptions**\n5. Combine verified info + empathy to draft response\n\n## Output Format\nSubject: <email subject>\n\n<email body>\n\nThank You,\nSupport Team\nwww.MagicCars.com",
+          "maxIterations": 2,
+          "returnIntermediateSteps": true
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.2,
+      "position": [
+        768,
+        96
+      ],
+      "id": "7429db8e-09ea-4444-b02b-2a21c88898cf",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "magiccars-gpt-4o-mini",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        624,
+        464
+      ],
+      "id": "bd1c61bc-5eb4-4ae8-bc40-a78e3bc4659d",
+      "name": "Azure OpenAI Chat Model",
+      "credentials": {
+        "azureOpenAiApi": {
+          "id": "OAfJGN7e61BdYSfo",
+          "name": "Azure Open AI account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "content": "### Master AI Agent\nAI Agent that will do all task\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nFeatures:\n- Model: Azure OpenAI gpt-4.0-mini (Base Model)\n- Context Memory: Postgres\n- MCP Client Tools\n- Knowledge Base ",
+        "height": 1024,
+        "width": 592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "a93d6cff-5bbe-43e3-8c87-30d638476e7a",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $json.conversationId }}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryPostgresChat",
+      "typeVersion": 1.3,
+      "position": [
+        832,
+        464
+      ],
+      "id": "93929b85-3376-4793-94e7-c26bc77c18c8",
+      "name": "Postgres Chat Memory",
+      "credentials": {
+        "postgres": {
+          "id": "vtMkQuhUbHP25x4q",
+          "name": "Postgres account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-mcp.mcpClientTool",
+      "typeVersion": 1,
+      "position": [
+        1024,
+        464
+      ],
+      "id": "bd96b34c-217b-4cc8-bfd1-64443c8e4a66",
+      "name": "MCP Client"
+    },
+    {
+      "parameters": {},
+      "type": "@n8n/n8n-nodes-langchain.toolVectorStore",
+      "typeVersion": 1.1,
+      "position": [
+        784,
+        1120
+      ],
+      "id": "4950ee12-be0f-459f-a7a4-55e968cf19ad",
+      "name": "Answer questions with a vector store",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        976,
+        1312
+      ],
+      "id": "12e17918-5da9-4d29-9187-f7384f3e207b",
+      "name": "Azure OpenAI Chat Model1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "qdrantCollection": {
+          "__rl": true,
+          "mode": "list",
+          "value": ""
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreQdrant",
+      "typeVersion": 1.3,
+      "position": [
+        624,
+        1312
+      ],
+      "id": "3e67e453-7653-4865-bf90-523d7e89fa8d",
+      "name": "Qdrant Vector Store",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
+      "typeVersion": 1,
+      "position": [
+        656,
+        1504
+      ],
+      "id": "2c52b733-0e73-4c12-abf3-fbfd83d3507c",
+      "name": "Embeddings Azure OpenAI",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "### Vector Knowledge Base\nTools to answer question that can be found in common pre-defined knowledge base \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "height": 656,
+        "width": 592
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        560,
+        1040
+      ],
+      "typeVersion": 1,
+      "id": "597cde88-f7c9-4aef-8e85-36343fd1369a",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "### Data Base and Outlook Output\nManage data using airtable and execute outlook actions\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "height": 688,
+        "width": 2112
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1168,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "1e5f4e39-7fbf-44b2-8d04-41c19ae0e732",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appKhurXlOZOXq5Qn",
+          "mode": "list",
+          "cachedResultName": "Shopify",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblRmYZQzmYR3lsYm",
+          "mode": "list",
+          "cachedResultName": "Emails",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn/tblRmYZQzmYR3lsYm"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "hasAttachments": "={{ $('Main Email Received Trigger').item.json.hasAttachments }}",
+            "conversationId": "={{ $('Main Email Received Trigger').item.json.conversationId }}",
+            "subject": "={{ $('Main Email Received Trigger').item.json.subject }}",
+            "from": "={{ $('Main Email Received Trigger').item.json.from.emailAddress.address }}",
+            "bodyPreview": "={{ $('Main Email Received Trigger').item.json.body.content }}",
+            "email_id": "={{ $('Main Email Received Trigger').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email_id",
+              "displayName": "email_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "conversationId",
+              "displayName": "conversationId",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "subject",
+              "displayName": "subject",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "bodyPreview",
+              "displayName": "bodyPreview",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "from",
+              "displayName": "from",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "hasAttachments",
+              "displayName": "hasAttachments",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1216,
+        96
+      ],
+      "id": "ebf29229-0eac-415d-9d03-6f0451f29e6e",
+      "name": "Create email record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "tzB6PMPszCBUCJKa",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        1456,
+        256
+      ],
+      "id": "6d2565f4-9a38-42a6-80fb-d5088195647d",
+      "name": "Loop Over Items"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appKhurXlOZOXq5Qn",
+          "mode": "list",
+          "cachedResultName": "Shopify",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZCMrIE59NWVW4L",
+          "mode": "list",
+          "cachedResultName": "Email Details",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn/tblZCMrIE59NWVW4L"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "to": "={{ $json.to[0].emailAddress.address }}",
+            "email_id": "={{ $('Main Email Received Trigger').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email_id",
+              "displayName": "email_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "to",
+              "displayName": "to",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "attachment",
+              "displayName": "attachment",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1680,
+        256
+      ],
+      "id": "d931be14-6a01-4c65-b469-f37b8f54ae7c",
+      "name": "Create to email detail record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "tzB6PMPszCBUCJKa",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c920d953-5f21-43fc-98ff-1c2d1fcd408d",
+              "name": "to",
+              "value": "={{ $('Main Email Received Trigger').item.json.toRecipients}}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        1216,
+        256
+      ],
+      "id": "369d3ed7-410c-49ef-b6fd-a681ab78c2a2",
+      "name": "To Input"
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyMinute"
+            }
+          ]
+        },
+        "output": "fields",
+        "fields": [
+          "subject",
+          "body",
+          "conversationId",
+          "from",
+          "toRecipients",
+          "hasAttachments",
+          "sender",
+          "receivedDateTime"
+        ],
+        "filters": {},
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlookTrigger",
+      "typeVersion": 1,
+      "position": [
+        -1040,
+        112
+      ],
+      "id": "6e111462-8744-4420-8944-30efcaf3e97d",
+      "name": "Main Email Received Trigger",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "base": {
+          "__rl": true,
+          "value": "appKhurXlOZOXq5Qn",
+          "mode": "list",
+          "cachedResultName": "Shopify",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblPUlT8NNX113S8T",
+          "mode": "list",
+          "cachedResultName": "AI Agent",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn/tblPUlT8NNX113S8T"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "userResponse": "={{ \"subject: \" + $('is_from_admin').item.json.subject + \"\\n\" + \"body: \" + $('is_from_admin').item.json.body.content }}",
+            "id": "={{ $json.id }}",
+            "ticketId": 0
+          },
+          "matchingColumns": [
+            "id"
+          ],
+          "schema": [
+            {
+              "id": "id",
+              "displayName": "id",
+              "required": false,
+              "defaultMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "email_id",
+              "displayName": "email_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ticketId",
+              "displayName": "ticketId",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "systemPrompt",
+              "displayName": "systemPrompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "userPrompt",
+              "displayName": "userPrompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "agentResponse",
+              "displayName": "agentResponse",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "userResponse",
+              "displayName": "userResponse",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "isUsed",
+              "displayName": "isUsed",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolArgument",
+              "displayName": "toolArgument",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "argumentType",
+              "displayName": "argumentType",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "variantSku",
+                  "value": "variantSku"
+                },
+                {
+                  "name": "orderNumber",
+                  "value": "orderNumber"
+                },
+                {
+                  "name": "none",
+                  "value": "none"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolOutput",
+              "displayName": "toolOutput",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolCallId",
+              "displayName": "toolCallId",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolName",
+              "displayName": "toolName",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolCallType",
+              "displayName": "toolCallType",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "models",
+              "displayName": "models",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        128,
+        336
+      ],
+      "id": "49491884-7049-40ff-a219-09bfad1cb136",
+      "name": "Update Agent AI record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "tzB6PMPszCBUCJKa",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e936494c-5e47-4a22-95f6-e418c45c4b24",
+              "leftValue": "={{ $json.sender.emailAddress.address }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "fa364ab5-56fa-4185-af0b-77a860a0029a",
+              "leftValue": "={{ $json.from.emailAddress.address }}",
+              "rightValue": "techsupport@magiccars.com",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -992,
+        384
+      ],
+      "id": "520b80c1-37f0-40f5-8047-23da51570d3c",
+      "name": "is_from_admin"
+    },
+    {
+      "parameters": {
+        "content": "### Update User Response\nUpdate Agent AI reocrd on Airtable after User send draft to customer\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "height": 272,
+        "width": 1648
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1104,
+        304
+      ],
+      "typeVersion": 1,
+      "id": "c41cf6b2-c2b7-47c7-b312-733bdf0df0ee",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $json.fields.email_id }}",
+          "mode": "id"
+        },
+        "updateFields": {
+          "isRead": true
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        336,
+        416
+      ],
+      "id": "42229010-1024-4b63-8300-ea3ccef640d9",
+      "name": "Update a message",
+      "webhookId": "0bcf08ab-5ce5-4f19-86e4-d7a46fcf4164",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appKhurXlOZOXq5Qn",
+          "mode": "list",
+          "cachedResultName": "Shopify",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblPUlT8NNX113S8T",
+          "mode": "list",
+          "cachedResultName": "AI Agent",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn/tblPUlT8NNX113S8T"
+        },
+        "filterByFormula": "={ticketId} = '{{ $json.refId }}'",
+        "returnAll": false,
+        "limit": 1,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        -384,
+        368
+      ],
+      "id": "643910d2-15aa-4b82-a33c-12565a120ace",
+      "name": "Search records",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "tzB6PMPszCBUCJKa",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to get product information from Shopify using variant sku or item number",
+        "workflowId": {
+          "__rl": true,
+          "value": "w4CoKE36KGfVUpfK",
+          "mode": "list",
+          "cachedResultName": "Get Shopify Product Info From SKU"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "variantSku": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('variantSku', `variant SKU or item number`, 'string') }}"
+          },
+          "matchingColumns": [
+            ""
+          ],
+          "schema": [
+            {
+              "id": "variantSku",
+              "displayName": "variantSku",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        624,
+        640
+      ],
+      "id": "e01f2adf-9263-4dd1-b509-e9ef7b39b7c1",
+      "name": "get_product_info"
+    },
+    {
+      "parameters": {
+        "description": "Call this tool to get order information from Shopify using order number",
+        "workflowId": {
+          "__rl": true,
+          "value": "V7TtmDnbM5BAqI8D",
+          "mode": "list",
+          "cachedResultName": "Get Shopify Order Info From Order Number"
+        },
+        "workflowInputs": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "orderNumber": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('orderNumber', `order number or order name`, 'string') }}"
+          },
+          "matchingColumns": [
+            "orderNumber"
+          ],
+          "schema": [
+            {
+              "id": "orderNumber",
+              "displayName": "orderNumber",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "canBeUsedToMatch": true,
+              "type": "string",
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolWorkflow",
+      "typeVersion": 2.2,
+      "position": [
+        832,
+        640
+      ],
+      "id": "a79458b2-77ca-4410-a927-19689c7a5a2e",
+      "name": "get_order_info",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "no_need_reply_sender = ['techsupport@magiccars.com', 'info@magiccars.com', 'info@mymagiccars.com', 'donotreply@godaddy.com', 'noreply@mixcloudmail.com', 'pkginfo@ups.com', 'adctr@microsoft.com', 'googleads-noreply@google.com', 'bigtoys@bigtoysdirect.com', 'do-not-reply@cloud-protect.net', 'newsletter@service.tiktok.com', 'adam@aiagencylasvegas.com', 'payments-noreply@google.com', 'harits.muhammad.only@outlook.com']\n\nfor item in _input.all():\n  input_string = item.json.sender.emailAddress.address\n  if input_string in no_need_reply_sender:\n    item.json.isReplyNeeded = False\n  else:\n    item.json.isReplyNeeded = True\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -496,
+        112
+      ],
+      "id": "9bd7b58b-e509-420e-948b-6f821e8da742",
+      "name": "Filter Sender"
+    },
+    {
+      "parameters": {
+        "jsCode": "const text = $input.item.json.body.content.toString();\nconst plain = text.replace(/<[^>]*>/g, ' ');\nconst m = plain.match(/Ref ID:\\s*([0-9]+)/i);\n\nreturn { refId: m ? m[1] : null };"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -592,
+        368
+      ],
+      "id": "2f562a17-7c35-4345-a401-3aee3eee8e5d",
+      "name": "Get Ref ID"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "e2c29f1d-0e29-4f87-bdff-a4009b301a37",
+              "leftValue": "={{ $json.sender.emailAddress.address }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -816,
+        112
+      ],
+      "id": "f8f276bc-90c8-4ea6-9e16-899b6fb346a7",
+      "name": "is_sender_found"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "7463b551-1999-485b-b122-27ff444dc247",
+              "leftValue": "={{ $json.sender.emailAddress.address }}",
+              "rightValue": "mailer@shopify.com",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -320,
+        32
+      ],
+      "id": "cb1f792e-c6ea-47a4-960a-e255631901df",
+      "name": "is_not_mailer_shopify"
+    },
+    {
+      "parameters": {
+        "language": "python",
+        "pythonCode": "import re\nimport html\n\nEMAIL_RE = re.compile(r'[A-Za-z0-9._%+\\-]+@[A-Za-z0-9.\\-]+\\.[A-Za-z]{2,}')\n\nfor item in _input.all():\n  content = item.json.body.content\n  text = html.unescape(re.sub(r'<[^>]+>', ' ', content))\n  # Prefer email after \"Email:\"\n  match_email = re.search(r'(?i)Email:\\s*([^\\s<>,;()]+)', text)\n  email = match_email.group(1) if match_email else None\n\n  match_body = re.search(r'(?is)\\bBody:\\s*(.*?)\\s*(?:Country Code:|Name:|Email:|Ref ID:|— Original message —|$)', text)\n  body = match_body.group(1) if match_body else ''\n\n  match_name = re.search(r'(?is)\\bName:\\s*(.*?)\\s*(?:Country Code:|Email:|Body:|Ref ID:|— Original message —|$)', text)\n  name = match_name.group(1) if match_name else ''\n  \n  item.json.sender.emailAddress.address = email\n  item.json.body.content = body\n  item.json.sender.emailAddress.name = name\n  frm = getattr(item.json, 'from', None)\n  if frm is not None:\n    frm.emailAddress.address = email\n    frm.emailAddress.name = name\n\nreturn _input.all()"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -128,
+        160
+      ],
+      "id": "251ae8a3-ca98-4004-8dfd-541b03290022",
+      "name": "parse_mailer_message"
+    },
+    {
+      "parameters": {
+        "content": "### Handle Microsoft Webhook\nReceive and handle webhook subscription from microsoft graph api outlook\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n",
+        "height": 432,
+        "width": 784
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -240,
+        592
+      ],
+      "typeVersion": 1,
+      "id": "cde58076-28ee-4621-b922-803f4ab0955f",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "outlook",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -160,
+        672
+      ],
+      "id": "256f2f80-e682-4ba7-ba4f-58c56e28ed2c",
+      "name": "Outlook Webhook",
+      "webhookId": "9537d7e5-100a-4904-b86b-a8395810c4b1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9144b0ca-7350-43d6-9bad-e67cec5563e9",
+              "leftValue": "={{ $json.body.value[0].changeType }}",
+              "rightValue": "deleted",
+              "operator": {
+                "type": "string",
+                "operation": "equals",
+                "name": "filter.operator.equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        48,
+        672
+      ],
+      "id": "3856c4a9-5b3d-44db-9bef-4ac600e40432",
+      "name": "is_drafts_deleted"
+    },
+    {
+      "parameters": {
+        "resource": "folderMessage",
+        "folderId": {
+          "__rl": true,
+          "value": "AAMkADkzMzZmNjA0LTY5Y2MtNGExYi04ODFmLWMxNGRhYjRlMzczZQAuAAAAAAC2x4uDU_9cRKPlhyZwqhnAAQCJXh0JoaUsRImlIoxEwKHbAAAAAAEKAAA=",
+          "mode": "list",
+          "cachedResultName": "Deleted Items",
+          "cachedResultUrl": "https://outlook.office365.com/mail/AAMkADkzMzZmNjA0LTY5Y2MtNGExYi04ODFmLWMxNGRhYjRlMzczZQAuAAAAAAC2x4uDU_9cRKPlhyZwqhnAAQCJXh0JoaUsRImlIoxEwKHbAAAAAAEKAAA%3D"
+        },
+        "limit": 1,
+        "output": "fields",
+        "fields": [
+          "body"
+        ],
+        "filtersUI": {
+          "values": {
+            "filters": {
+              "receivedAfter": "={{ $json.headers['request-timestamp'].toDateTime().plus(-1, 'minutes').toISO() }}"
+            }
+          }
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        320,
+        672
+      ],
+      "id": "3c87d3d5-bd8d-447a-b738-8a240f5c6419",
+      "name": "Get many folder messages",
+      "webhookId": "2b64c794-38db-4b22-b87d-fe0800c6968e",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "6273557b-dd35-4aa7-a6ff-858fd64b4450",
+              "leftValue": "={{ $json.isDraft }}",
+              "rightValue": "",
+              "operator": {
+                "type": "number",
+                "operation": "notExists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -144,
+        400
+      ],
+      "id": "c1540c14-15c5-4c7e-9a66-3c7e35698428",
+      "name": "is_not_draft"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.isDraft = 1;\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -784,
+        448
+      ],
+      "id": "8229a495-3997-4584-85b8-f1026e485e79",
+      "name": "isDraft"
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{$json[\"query\"][\"validationToken\"]}}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/plain"
+              }
+            ]
+          }
+        }
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        320,
+        864
+      ],
+      "id": "460d17b6-d85f-4490-b6ff-3f58e0a5ab18",
+      "name": "Validation Respond"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "76eca4a8-824c-4b1d-84d1-9d5c46f4414a",
+              "leftValue": "={{ $json.isReplyNeeded }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            },
+            {
+              "id": "0467492a-42f9-4d80-88bb-4b8ad15d2146",
+              "leftValue": "={{ $json.subject }}",
+              "rightValue": "Undeliverable",
+              "operator": {
+                "type": "string",
+                "operation": "notContains"
+              }
+            },
+            {
+              "id": "acb1ca61-dc24-491c-9158-a1f2aa9870ea",
+              "leftValue": "={{ $json.body.content }}",
+              "rightValue": "\"\"",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        240,
+        112
+      ],
+      "id": "712e34bd-ee49-453e-aea4-52dbb4780b50",
+      "name": "is_from_customer"
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appKhurXlOZOXq5Qn",
+          "mode": "list",
+          "cachedResultName": "Shopify",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblZCMrIE59NWVW4L",
+          "mode": "list",
+          "cachedResultName": "Email Details",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn/tblZCMrIE59NWVW4L"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email_id": "={{ $('Create Agent AI record').item.json.fields.email_id }}",
+            "attachment_id": "={{ $('Download an attachment').item.json.id }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email_id",
+              "displayName": "email_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "to",
+              "displayName": "to",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "attachment_id",
+              "displayName": "attachment_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        3104,
+        496
+      ],
+      "id": "cd0395ce-93a7-411f-9d64-c0b97e3a5666",
+      "name": "Create attachment email detail record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "tzB6PMPszCBUCJKa",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "create",
+        "base": {
+          "__rl": true,
+          "value": "appKhurXlOZOXq5Qn",
+          "mode": "list",
+          "cachedResultName": "Shopify",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblPUlT8NNX113S8T",
+          "mode": "list",
+          "cachedResultName": "AI Agent",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn/tblPUlT8NNX113S8T"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "agentResponse": "={{ $json.agentResponse }}",
+            "userPrompt": "={{ \"subject: \" + $('Main Email Received Trigger').item.json.subject + \"\\n\" + \"body: \" + $('Main Email Received Trigger').item.json.body.content + \"\\n\" + \"from: \" + $('Main Email Received Trigger').item.json.from.emailAddress.address }}",
+            "systemPrompt": "SYSTEM PROMPT: Email Customer Service Agent  You are an AI customer service agent. Your purpose is to provide professional, empathetic, and accurate email replies to customer inquiries.  Instructions      Analyze the customer's email to understand their request and emotion.      If product information is required, use the get_product_info tool. The parameter for this tool is the Shopify variant SKU, labeled as item_number.      Synthesize the information from the customer's email and the tool's output to draft a comprehensive and empathetic response.      Finalize the response. The output must be the complete, ready-to-send email. Do not include internal thoughts, tool calls, or notes. Always start with a friendly greeting and end with a professional closing.  Tool      get_product_info(item_number: str): Fetches details for a product using its Shopify variant SKU.",
+            "email_id": "={{ $('Main Email Received Trigger').item.json.id }}",
+            "toolArgument": "={{ $json.toolArgument }}",
+            "isUsed": false,
+            "argumentType": "={{ $json.argumentType }}",
+            "models": "={{ $json.models }}",
+            "toolOutput": "={{ $json.toolOutput }}",
+            "toolCallId": "={{ $json.toolCallId }}",
+            "toolName": "={{ $json.toolName }}",
+            "toolCallType": "={{ $json.toolCallType }}",
+            "ticketId": "={{ $now.toMillis() }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "email_id",
+              "displayName": "email_id",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ticketId",
+              "displayName": "ticketId",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "systemPrompt",
+              "displayName": "systemPrompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "userPrompt",
+              "displayName": "userPrompt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "agentResponse",
+              "displayName": "agentResponse",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "userResponse",
+              "displayName": "userResponse",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "createdAt",
+              "displayName": "createdAt",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": true,
+              "removed": false
+            },
+            {
+              "id": "isUsed",
+              "displayName": "isUsed",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolArgument",
+              "displayName": "toolArgument",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "argumentType",
+              "displayName": "argumentType",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "options",
+              "options": [
+                {
+                  "name": "variantSku",
+                  "value": "variantSku"
+                },
+                {
+                  "name": "orderNumber",
+                  "value": "orderNumber"
+                },
+                {
+                  "name": "none",
+                  "value": "none"
+                }
+              ],
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolOutput",
+              "displayName": "toolOutput",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolCallId",
+              "displayName": "toolCallId",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolName",
+              "displayName": "toolName",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "toolCallType",
+              "displayName": "toolCallType",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "models",
+              "displayName": "models",
+              "required": false,
+              "defaultMatch": false,
+              "canBeUsedToMatch": true,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        1424,
+        496
+      ],
+      "id": "f98dbc15-1254-45fd-8d82-8b55e0a1c510",
+      "name": "Create Agent AI record",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "tzB6PMPszCBUCJKa",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "subject": "=Re: {{ $('is_from_customer').item.json.subject }}",
+        "bodyContent": "={{ $('Draft Formatting').item.json.BodyHtml }}",
+        "additionalFields": {
+          "bodyContentType": "html",
+          "toRecipients": "={{ $('is_from_customer').item.json.from.emailAddress.address }}"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        1840,
+        496
+      ],
+      "id": "5b02bc67-5a53-4f78-b452-802ac369aa19",
+      "name": "Create a draft",
+      "webhookId": "dbed892b-fa60-41ae-8049-3a2e38d92c4a",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// A new array to hold the output items\nconst outputItems = [];\n\n// Loop over all input items\nfor (const item of $input.all()) {\n    // Check if the required path exists to avoid errors\n    if (item.json.intermediateSteps?.[0]?.action?.toolInput) {\n        // Create a new object for the output, selecting only the fields you want\n        const newItem = {\n            json: {\n              toolArgument: item.json.intermediateSteps[0].action.toolInput.variantSku,\n              argumentType: Object.keys(item.json.intermediateSteps[0].action.toolInput)[0],\n              agentResponse: item.json.output,\n              toolName: item.json.intermediateSteps[0].action.tool,\n              toolCallId: item.json.intermediateSteps[0].action.toolCallId,\n              toolCallType: item.json.intermediateSteps[0].action.messageLog[0].kwargs.additional_kwargs.tool_calls[0].type,\n              models: item.json.intermediateSteps[0].action.messageLog[0].kwargs.response_metadata.model_name,\n              toolOutput: item.json.intermediateSteps[0].observation\n            }\n        };\n\n        // Push the new item to our output array\n        outputItems.push(newItem);\n    }\n    else {\n      const newItem = {\n            json: {\n              toolArgument: '',\n              argumentType: 'none',\n              agentResponse: item.json.output,\n              toolName: '',\n              toolCallId: '',\n              toolCallType: '',\n              models: 'gpt-4o-mini-2024-07-18',\n              toolOutput: ''\n            }\n        };\n\n        // Push the new item to our output array\n        outputItems.push(newItem);\n    }\n}\n\nreturn outputItems;\n"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1216,
+        496
+      ],
+      "id": "a4e61b9f-8374-4946-ba25-99c083aefae4",
+      "name": "Agent AI input"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "let subject = '';\nlet body = '';\n\nconst ticketId = String(($json?.fields?.ticketId ?? 'N/A')).trim();\nconst FOOTER_TEXT = `Ref ID: ${ticketId}`;\n\nconst agentResponseText = $input.item.json?.fields?.agentResponse || '';\n\nconst trigger = (() => {\n  try {\n    // Fix typo from earlier: 'is_from_cutomer' -> 'is_from_customer'\n    return $('is_from_customer').first().json;\n  } catch (e) {\n    try {\n      const it = $items('Main Email Received Trigger', 0, 0);\n      return it?.json;\n    } catch (_) {\n      return undefined;\n    }\n  }\n})();\n\nconst originalEmailBody = trigger?.body?.content || '';\nconst originalEmailType = (trigger?.body?.contentType || '').toLowerCase();\nconst receivedDateTime = trigger?.receivedDateTime;\nconst senderName = trigger?.sender?.emailAddress?.name || '';\nconst senderEmail = trigger?.sender?.emailAddress?.address || '';\nconst fallbackThreadSubject = trigger?.subject || '';\n\n/* -------------------- helpers -------------------- */\n\n// Proper HTML escaping for *text content only*\nfunction escapeHtml(s) {\n  return String(s).replace(/[&<>\"']/g, c => ({\n    '&': '&amp;',\n    '<': '&lt;',\n    '>': '&gt;',\n    '\"': '&quot;',\n    \"'\": '&#39;',\n  }[c]));\n}\n\n// Pre-process agent draft: strip wrapping quotes/backticks and normalize LF\nfunction preprocessAgentResponse(s) {\n  if (s == null) return '';\n  let t = String(s).trim();\n\n  // Strip wrapping quotes\n  if ((t.startsWith('\"') && t.endsWith('\"')) || (t.startsWith(\"'\") && t.endsWith(\"'\"))) {\n    t = t.slice(1, -1).trim();\n  }\n\n  // Strip ```lang ... ```\n  t = t.replace(/^```[\\w-]*\\s*\\r?\\n?/, '');   // leading fence + optional language\n  t = t.replace(/\\r?\\n?```$/, '');           // trailing fence\n\n  // Normalize CRLF to LF\n  t = t.replace(/\\r\\n/g, '\\n');\n\n  return t;\n}\n\n// Return {subject, body} parsed from preprocessed draft\nfunction parseSubjectAndBodyFromDraft(draft) {\n  const sm = draft.match(/^\\s*Subject:\\s*(.+)\\s*$/mi);\n\n  if (!sm) {\n    return { subject: '', body: draft.trim() };\n  }\n\n  const subjectValue = sm[1].trim();\n  const lines = draft.split('\\n');\n  const subjIdx = lines.findIndex(l => /^\\s*Subject:/i.test(l));\n\n  let i = subjIdx + 1;\n  while (i < lines.length && lines[i].trim() === '') i++;\n\n  const bodyValue = lines.slice(i).join('\\n').trim();\n\n  return { subject: subjectValue, body: bodyValue };\n}\n\n// Keep existing formatting; no localization beyond this\nfunction formatDate(dateString) {\n  if (!dateString) return '';\n  const date = new Date(dateString);\n  return date.toLocaleString('en-US', {\n    weekday: 'long',\n    year: 'numeric',\n    month: 'long',\n    day: 'numeric',\n    hour: 'numeric',\n    minute: '2-digit',\n    timeZoneName: 'short',\n  });\n}\n\n// Decode one level of common entities toward *real* HTML\nfunction decodeCommonEntitiesOnce(text) {\n  const map = {\n    '&amp;lt;': '<', '&amp;gt;': '>', '&amp;quot;': '\"', '&amp;#39;': \"'\", '&amp;amp;': '&', '&amp;nbsp;': '\\u00A0',\n    '&lt;': '<', '&gt;': '>', '&quot;': '\"', '&#39;': \"'\", '&amp;': '&', '&nbsp;': '\\u00A0',\n  };\n  return String(text).replace(/&(amp;)?(?:lt|gt|quot|#39|amp|nbsp);/g, m => map[m] || m);\n}\n\n// Decode up to 2 passes (common for doubly-encoded bodies)\nfunction decodeEntitiesToHtml(text, maxPasses = 2) {\n  let prev = String(text);\n  for (let i = 0; i < maxPasses; i++) {\n    const next = decodeCommonEntitiesOnce(prev);\n    if (next === prev) break;\n    prev = next;\n  }\n  return prev;\n}\n\n// Extract <body> content if present; otherwise entire HTML\nfunction extractBodyHtml(html) {\n  const m = String(html).match(/<body[^>]*>([\\s\\S]*?)<\\/body>/i);\n  return (m ? m[1] : html).trim();\n}\n\n/**\n * Sanitize HTML but keep images.\n * - Removes risky tags: script/style/meta/link/iframe/object/embed/form\n * - Strips event handlers (onclick, etc.)\n * - Allows href schemes: http(s), mailto:, cid:\n * - Allows img src schemes: http(s), cid:, data:image\n * - Optionally drops likely tracking beacons (1x1 or hidden imgs)\n */\nfunction sanitizeEmailHtml(html, opts = { allowImages: true, dropTrackingBeacons: true }) {\n  let h = String(html);\n  const { allowImages, dropTrackingBeacons } = opts;\n\n  // Remove entire blocks for risky tags\n  h = h.replace(/<(script|style|meta|link|iframe|object|embed|form)\\b[^>]*>[\\s\\S]*?<\\/\\1>/gi, '');\n  // Remove standalone risky/self-closing variants\n  h = h.replace(/<(script|style|meta|link|iframe|object|embed|form)\\b[^>]*\\/?>/gi, '');\n\n  // Strip event handlers like onclick=\"...\"\n  h = h.replace(/\\s+on\\w+=(?:\"[^\"]*\"|'[^']*'|[^\\s>]+)/gi, '');\n\n  // Neutralize non-allowed HREF schemes\n  h = h.replace(/\\s+href\\s*=\\s*\"(?!https?:|mailto:|cid:)[^\"]*\"/gi, ' href=\"#\"');\n  h = h.replace(/\\s+href\\s*=\\s*'(?!https?:|mailto:|cid:)[^']*'/gi, \" href='#'\");\n\n  if (allowImages) {\n    // For <img>, limit src to http(s), cid:, or data:image (inline)\n    h = h.replace(/(<img\\b[^>]*\\s)src\\s*=\\s*\"(?:(?!https?:|cid:|data:image)[^\"]*)\"/gi, '$1src=\"\"');\n    h = h.replace(/(<img\\b[^>]*\\s)src\\s*=\\s*'(?:(?!https?:|cid:|data:image)[^']*)'/gi, \"$1src=''\");\n\n    if (dropTrackingBeacons) {\n      // Remove likely tracking beacons: 1x1 or hidden\n      h = h.replace(/<img\\b([^>]*)>/gi, (m, attrs) => {\n        const a = attrs.toLowerCase();\n        const has1x1 = /\\bwidth\\s*=\\s*[\"']?1[\"']?\\b/.test(a) && /\\bheight\\s*=\\s*[\"']?1[\"']?\\b/.test(a);\n        const hidden = /display\\s*:\\s*none|visibility\\s*:\\s*hidden|opacity\\s*:\\s*0/.test(a);\n        return (has1x1 || hidden) ? '' : m;\n      });\n    }\n  } else {\n    // Strip images entirely\n    h = h.replace(/<img\\b[^>]*>/gi, '');\n  }\n\n  return h;\n}\n\n// Convert HTML to readable text (for plain-text fallback)\nfunction htmlToText(html) {\n  return String(html)\n    .replace(/<a\\b[^>]*href=\"([^\"]+)\"[^>]*>(.*?)<\\/a>/gi, (m, href, text) => `${text} (${href})`)\n    .replace(/<br\\s*\\/?>/gi, '\\n')\n    .replace(/<\\/p>/gi, '\\n\\n')\n    .replace(/<\\/div>/gi, '\\n')\n    .replace(/<li>/gi, '• ')\n    .replace(/<\\/li>/gi, '\\n')\n    .replace(/<[^>]+>/g, '')\n    .replace(/\\u00A0/g, ' ')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .trim();\n}\n\nfunction tidyText(text) {\n  return String(text)\n    .replace(/\\r\\n/g, '\\n')\n    .replace(/\\t/g, '  ')\n    .replace(/\\n{3,}/g, '\\n\\n')\n    .trim();\n}\n\nfunction indentQuoted(text) {\n  return String(text).split('\\n').map(l => '    ' + l).join('\\n');\n}\n\n/* -------------------- 1) Parse Agent Draft -------------------- */\n\nconst draft = preprocessAgentResponse(agentResponseText);\nconst parsed = parseSubjectAndBodyFromDraft(draft);\nsubject = parsed.subject || fallbackThreadSubject || '(No subject)';\nbody = parsed.body || '';\n\n/* Agent body as HTML (escape text, then convert newlines to <br>) */\nconst agentBodyHtml =\n  `<div style=\"font-family:Segoe UI, Arial, sans-serif; line-height:1.5; color:#111827;\">` +\n    (body ? escapeHtml(body).replace(/\\n/g, '<br>') : '') +\n  `</div>`;\n\n/* -------------------- 2) Build \"Original Message\" quoted block -------------------- */\n\nconst headerHtml =\n  `<div style=\"margin:0 0 8px 0; font-size:12px; color:#6B7280;\">` +\n    `<div style=\"font-weight:600; color:#374151;\">— Original message —</div>` +\n    ((senderName || senderEmail) ? `<div>From: ${escapeHtml(senderName)} &lt;${escapeHtml(senderEmail)}&gt;</div>` : '') +\n    (receivedDateTime ? `<div>Sent: ${escapeHtml(formatDate(receivedDateTime))}</div>` : '') +\n  `</div>`;\n\nconst headerText =\n  `\\n\\n--- Original Message ---\\n` +\n  ((senderName || senderEmail) ? `From: ${senderName} <${senderEmail}>\\n` : '') +\n  (receivedDateTime ? `Sent: ${formatDate(receivedDateTime)}\\n` : '') +\n  `\\n`;\n\nlet quotedOriginalHtml = '';\nlet quotedOriginalText = '';\n\nif (originalEmailBody) {\n  if (originalEmailType === 'html') {\n    // Reach real HTML (handle once/twice-encoded bodies)\n    let htmlCandidate = originalEmailBody;\n    if (!/[<>]/.test(htmlCandidate)) {\n      htmlCandidate = decodeEntitiesToHtml(htmlCandidate, 2);\n    }\n\n    // Extract <body> content and sanitize, but keep images\n    let html = extractBodyHtml(htmlCandidate);\n    html = sanitizeEmailHtml(html, { allowImages: true, dropTrackingBeacons: false });\n\n    quotedOriginalHtml =\n      `<blockquote style=\"margin:16px 0 0 0; padding-left:12px; border-left:3px solid #e5e7eb; color:#374151;\">` +\n        headerHtml +\n        html + // real HTML preserved (sanitized)\n      `</blockquote>`;\n\n    quotedOriginalText = headerText + htmlToText(html);\n\n  } else {\n    // Plain text original\n    const cleanText = tidyText(originalEmailBody);\n    quotedOriginalText = headerText + indentQuoted(cleanText);\n\n    quotedOriginalHtml =\n      `<blockquote style=\"margin:16px 0 0 0; padding-left:12px; border-left:3px solid #e5e7eb; color:#374151;\">` +\n        headerHtml +\n        `<pre style=\"white-space:pre-wrap; font-family:Segoe UI, Arial, sans-serif; margin:0;\">${escapeHtml(cleanText)}</pre>` +\n      `</blockquote>`;\n  }\n}\n\n/* -------------------- 3) Footer -------------------- */\n\nconst footerHtml =\n  `<div style=\"margin-top:16px; font-size:12px; color:#6B7280;\">${escapeHtml(FOOTER_TEXT)}</div>`;\n\n/* -------------------- 4) Final HTML and Plain Text bodies -------------------- */\n\nconst finalHtml =\n  `<div style=\"font-family:Segoe UI, Arial, sans-serif; line-height:1.5; color:#111827;\">` +\n    agentBodyHtml +\n    quotedOriginalHtml +\n    footerHtml +\n  `</div>`;\n\nconst finalText =\n  (body ? tidyText(body) : '') +\n  (quotedOriginalText ? `\\n\\n${quotedOriginalText}` : '') +\n  `\\n\\n${FOOTER_TEXT}`;\n\n\n\n// Extract all cid content IDs used by cid:...\nfunction extractCidList(html) {\n  const ids = new Set();\n  const re = /<img\\b[^>]*\\bsrc\\s*=\\s*[\"']cid:([^\"']+)[\"']/gi;\n  let m;\n  while ((m = re.exec(html))) {\n    ids.add(m[1]);\n  }\n  return Array.from(ids);\n}\n\nconst cidList = extractCidList(finalHtml);\n\n\n/* -------------------- 5) Output fields -------------------- */\n\n$input.item.json['Subject']  = subject;\n$input.item.json['Body']     = finalText;   // Plain text fallback\n$input.item.json['BodyHtml'] = finalHtml;   // True HTML for Outlook\n$input.item.json['InlineContentIds']  = cidList;     // [\"ii_mgo7f4qv0\", ...]\n$input.item.json['OriginalMessageId'] = trigger?.id; // Needed to fetch attachments\n\n\nreturn $input.item;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1632,
+        496
+      ],
+      "id": "bc53d0ba-9c62-4a42-b70b-ffbffe4925fe",
+      "name": "Draft Formatting"
+    },
+    {
+      "parameters": {
+        "resource": "draft",
+        "operation": "update",
+        "draftId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "updateFields": {
+          "isRead": false
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        2048,
+        496
+      ],
+      "id": "4550d517-c000-4016-8109-9ee090d4bfb8",
+      "name": "Update a draft",
+      "webhookId": "d454adf0-8b64-4f77-9357-57f8e4893100",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messageAttachment",
+        "operation": "getAll",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $('Draft Formatting').item.json.OriginalMessageId }}",
+          "mode": "id"
+        },
+        "returnAll": true,
+        "options": {
+          "fields": [
+            "name",
+            "contentType",
+            "size",
+            "isInline",
+            "lastModifiedDateTime"
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        2256,
+        496
+      ],
+      "id": "ed3e7e14-8923-4574-aa5c-d88660fae918",
+      "name": "Get many attachments",
+      "webhookId": "d7e544d1-3e00-4666-86a5-5dd9c49b1c72",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messageAttachment",
+        "operation": "download",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $('Draft Formatting').item.json.OriginalMessageId }}",
+          "mode": "id"
+        },
+        "attachmentId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        }
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        2672,
+        496
+      ],
+      "id": "7c414370-2f54-41fe-b745-313157496319",
+      "name": "Download an attachment",
+      "webhookId": "d3484d0b-15f4-4821-af60-0159e8442d52",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "messageAttachment",
+        "messageId": {
+          "__rl": true,
+          "value": "={{ $('Update a draft').item.json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.microsoftOutlook",
+      "typeVersion": 2,
+      "position": [
+        2880,
+        496
+      ],
+      "id": "47c6e272-8612-46b5-bf26-039953fbb0ee",
+      "name": "Add an attachment",
+      "webhookId": "9e682788-f987-4887-b89a-d8cd055eb6b6",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        2448,
+        480
+      ],
+      "id": "6643658a-5b54-4048-a4db-f0ea82a75224",
+      "name": "For Each Attachments"
+    }
+  ],
+  "pinData": {
+    "Outlook Webhook": [
+      {
+        "json": {
+          "headers": {
+            "host": "n8n.naruoutlet.web.id",
+            "x-real-ip": "40.126.5.41",
+            "x-forwarded-for": "40.126.5.41",
+            "x-forwarded-proto": "https",
+            "connection": "upgrade",
+            "content-length": "927",
+            "request-id": "936cca1e-9df6-41eb-897b-380214a63c93",
+            "request-timestamp": "10/13/2025 4:19:41 AM +00:00",
+            "content-type": "application/json; charset=utf-8"
+          },
+          "params": {},
+          "query": {},
+          "body": {
+            "value": [
+              {
+                "subscriptionId": "44837be7-7395-4452-821f-d4b77e561040",
+                "subscriptionExpirationDateTime": "2025-10-19T20:31:38.861+00:00",
+                "changeType": "deleted",
+                "resource": "Users/d6ef690b-3dde-4a56-a276-f33e8a9c4194/Messages/AAMkADkzMzZmNjA0LTY5Y2MtNGExYi04ODFmLWMxNGRhYjRlMzczZQBGAAAAAAC2x4uDU_9cRKPlhyZwqhnABwCJXh0JoaUsRImlIoxEwKHbAAAAAAEPAACJXh0JoaUsRImlIoxEwKHbAAAOISdMAAA=",
+                "resourceData": {
+                  "@odata.type": "#Microsoft.Graph.Message",
+                  "@odata.id": "Users/d6ef690b-3dde-4a56-a276-f33e8a9c4194/Messages/AAMkADkzMzZmNjA0LTY5Y2MtNGExYi04ODFmLWMxNGRhYjRlMzczZQBGAAAAAAC2x4uDU_9cRKPlhyZwqhnABwCJXh0JoaUsRImlIoxEwKHbAAAAAAEPAACJXh0JoaUsRImlIoxEwKHbAAAOISdMAAA=",
+                  "@odata.etag": "W/\"CQAAAA==\"",
+                  "id": "AAMkADkzMzZmNjA0LTY5Y2MtNGExYi04ODFmLWMxNGRhYjRlMzczZQBGAAAAAAC2x4uDU_9cRKPlhyZwqhnABwCJXh0JoaUsRImlIoxEwKHbAAAAAAEPAACJXh0JoaUsRImlIoxEwKHbAAAOISdMAAA="
+                },
+                "clientState": "SecretClientState",
+                "tenantId": "a1d747ac-40cd-416c-aa05-e47e4dae311c"
+              }
+            ]
+          },
+          "webhookUrl": "https://n8n.naruoutlet.web.id/webhook/outlook",
+          "executionMode": "production"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Azure OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Postgres Chat Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Answer questions with a vector store": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Azure OpenAI Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Qdrant Vector Store": {
+      "ai_vectorStore": [
+        [
+          {
+            "node": "Answer questions with a vector store",
+            "type": "ai_vectorStore",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Azure OpenAI": {
+      "ai_embedding": [
+        [
+          {
+            "node": "Qdrant Vector Store",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "To Input",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Create email record",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Agent AI input",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Create to email detail record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create to email detail record": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "To Input": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Main Email Received Trigger": {
+      "main": [
+        [
+          {
+            "node": "is_sender_found",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_from_admin": {
+      "main": [
+        [
+          {
+            "node": "Get Ref ID",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "isDraft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "MCP Client": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Agent AI record": {
+      "main": [
+        [
+          {
+            "node": "Update a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Search records": {
+      "main": [
+        [
+          {
+            "node": "is_not_draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_product_info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_order_info": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Sender": {
+      "main": [
+        [
+          {
+            "node": "is_not_mailer_shopify",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Ref ID": {
+      "main": [
+        [
+          {
+            "node": "Search records",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_sender_found": {
+      "main": [
+        [
+          {
+            "node": "Filter Sender",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_not_mailer_shopify": {
+      "main": [
+        [
+          {
+            "node": "is_from_customer",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "parse_mailer_message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "parse_mailer_message": {
+      "main": [
+        [
+          {
+            "node": "is_from_customer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Outlook Webhook": {
+      "main": [
+        [
+          {
+            "node": "is_drafts_deleted",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_drafts_deleted": {
+      "main": [
+        [
+          {
+            "node": "Get many folder messages",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Validation Respond",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many folder messages": {
+      "main": [
+        [
+          {
+            "node": "is_from_admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_not_draft": {
+      "main": [
+        [
+          {
+            "node": "Update Agent AI record",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Update a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "isDraft": {
+      "main": [
+        [
+          {
+            "node": "Get Ref ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "is_from_customer": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "is_from_admin",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create attachment email detail record": {
+      "main": [
+        [
+          {
+            "node": "For Each Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Agent AI record": {
+      "main": [
+        [
+          {
+            "node": "Draft Formatting",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a draft": {
+      "main": [
+        [
+          {
+            "node": "Update a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Agent AI input": {
+      "main": [
+        [
+          {
+            "node": "Create Agent AI record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Draft Formatting": {
+      "main": [
+        [
+          {
+            "node": "Create a draft",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update a draft": {
+      "main": [
+        [
+          {
+            "node": "Get many attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get many attachments": {
+      "main": [
+        [
+          {
+            "node": "For Each Attachments",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download an attachment": {
+      "main": [
+        [
+          {
+            "node": "Add an attachment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Add an attachment": {
+      "main": [
+        [
+          {
+            "node": "Create attachment email detail record",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "For Each Attachments": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Download an attachment",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9650518a-e217-49d5-b494-9f2112856402",
+  "meta": {
+    "instanceId": "ea68aa92f725604eeaa44d0a6133fc72648a6aad0ed32bd68b46f396c6924195"
+  },
+  "id": "CXfm0VNrCXZOCNFc",
+  "tags": []
+}
