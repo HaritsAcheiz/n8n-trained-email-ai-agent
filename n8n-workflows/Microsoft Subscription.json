@@ -1,0 +1,165 @@
+{
+  "name": "Microsoft Subscription",
+  "nodes": [
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        -16,
+        192
+      ],
+      "id": "0f68dc8f-6061-4187-8d60-baa88b628c9d",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "content": "Create And Refresh Subscription",
+        "height": 400,
+        "width": 464
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -48,
+        144
+      ],
+      "typeVersion": 1,
+      "id": "c9a0c984-8fe5-45d8-bdbf-98c036e726e1",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://graph.microsoft.com/v1.0/subscriptions",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"changeType\": \"updated,deleted\",\n  \"notificationUrl\": \"https://n8n.naruoutlet.web.id/webhook/outlook\",\n  \"resource\": \"/me/mailfolders('drafts')/messages\",\n  \"expirationDateTime\": \"{{ new Date(Date.now() + (10080 - 10) * 60000).toISOString() }}\",\n  \"clientState\": \"SecretClientState\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        192
+      ],
+      "id": "0f8cd7b6-8497-485c-a8a9-47ef18efe85f",
+      "name": "Create Subscription",
+      "credentials": {
+        "microsoftOutlookOAuth2Api": {
+          "id": "9JO7mB9296REMY7A",
+          "name": "techsupport@magiccars.com"
+        },
+        "microsoftOAuth2Api": {
+          "id": "UC4Ubk0bfpSwigIx",
+          "name": "techsupport OAuth2 API"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours",
+              "hoursInterval": 12
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -16,
+        384
+      ],
+      "id": "ff8f70f7-0c90-4eda-a2ce-9e4869c42068",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "method": "PATCH",
+        "url": "https://graph.microsoft.com/v1.0/subscriptions/44837be7-7395-4452-821f-d4b77e561040",
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "microsoftOAuth2Api",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "=\n{\n  \"expirationDateTime\": \"{{ new Date(Date.now() + (10080 - 10) * 60000).toISOString() }}\"\n}\n\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        192,
+        384
+      ],
+      "id": "3869dfe4-8dc5-4b41-9df7-4abfa66309c1",
+      "name": "Renew Subscription",
+      "credentials": {
+        "microsoftOAuth2Api": {
+          "id": "UC4Ubk0bfpSwigIx",
+          "name": "techsupport OAuth2 API"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Create Subscription",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Subscription": {
+      "main": [
+        []
+      ]
+    },
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "Renew Subscription",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "3b0766ec-f402-4594-8c0e-12daf7d8a768",
+  "meta": {
+    "instanceId": "ea68aa92f725604eeaa44d0a6133fc72648a6aad0ed32bd68b46f396c6924195"
+  },
+  "id": "JE9TxrmYEyH8WnW6",
+  "tags": []
+}

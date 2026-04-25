@@ -1,0 +1,345 @@
+{
+  "name": "Model Training",
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "weeks"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ],
+      "id": "97c274e0-41b5-4e5e-a047-ed9e74431c89",
+      "name": "Schedule Trigger"
+    },
+    {
+      "parameters": {
+        "operation": "search",
+        "base": {
+          "__rl": true,
+          "value": "appKhurXlOZOXq5Qn",
+          "mode": "list",
+          "cachedResultName": "Shopify",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn"
+        },
+        "table": {
+          "__rl": true,
+          "value": "tblPUlT8NNX113S8T",
+          "mode": "list",
+          "cachedResultName": "AI Agent",
+          "cachedResultUrl": "https://airtable.com/appKhurXlOZOXq5Qn/tblPUlT8NNX113S8T"
+        },
+        "filterByFormula": "=AND({createdAt} <= NOW(), NOT({isUsed}))",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.airtable",
+      "typeVersion": 2.1,
+      "position": [
+        208,
+        0
+      ],
+      "id": "f69dfabe-a950-4643-ab02-bf9d26cefa10",
+      "name": "get_training_data",
+      "credentials": {
+        "airtableTokenApi": {
+          "id": "tzB6PMPszCBUCJKa",
+          "name": "Airtable Personal Access Token account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Loop over input items and add a new field called 'myNewField' to the JSON of each one\nfor (const item of $input.all()) {\n  item.json.output = [\n    {\n      \"messages\":[\n        {\n          \"role\": \"system\",\n          \"content\": item.json.systemPrompt\n        },\n        {\n          \"role\": \"user\",\n          \"content\": item.json.userPrompt\n        },\n        {\n          \"role\":\"assistant\",\n          \"tool_calls\":[\n            {\n              \"id\":item.json.toolCallId,\n              \"type\":item.json.toolCallType,\n              \"function\":{\n                \"name\": item.json.toolName,\n                \"arguments\": item.json.toolArgument\n              }\n            }\n          ]\n        },\n        {\n          \"role\": \"tool\",\n          \"tool_call_id\": item.json.toolCallId,\n          \"content\": item.json.toolOutput\n        },\n        {\n          \"role\": \"assistant\",\n          \"content\": item.json.agentResponse\n        }\n      ],\n      \"parallel_tool_calls\":false,\n      \"tools\":[\n        {\n          \"type\": \"function\",\n          \"function\":{\n            \"name\":\"get_product_info_from_sku\",\n            \"description\":\"Call this tool to get product information from Shopify using variant sku or item number\",\n            \"parameters\":{\n              \"type\":\"object\",\n              \"properties\":{\n                \"variantSku\":{\n                  \"type\":\"string\",\n                  \"description\":\"variant SKU or item number, eg. 25-60988\"\n                }\n              },\n              \"required\":[\"variantSku\"]\n            }\n          }\n        }\n      ]\n    }\n  ]\n}\n\nreturn $input.all();"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        416,
+        0
+      ],
+      "id": "6c1d3f87-c5bf-4bd9-9e1b-23489f5f5432",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "operation": "toJson",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1264,
+        0
+      ],
+      "id": "b00948cb-830c-46b5-b7ac-f7f3b6b4e6dd",
+      "name": "Convert to File",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai-email-automation.openai.azure.com/openai/files",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "api-version",
+              "value": "2025-03-01-preview"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": "<YOUR_AZURE_OPENAI_API_KEY>"
+            },
+            {
+              "name": "Content-Type",
+              "value": "multipart/form-data"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "multipart-form-data",
+        "bodyParameters": {
+          "parameters": [
+            {
+              "parameterType": "formBinaryData",
+              "name": "file",
+              "inputDataFieldName": "data"
+            },
+            {
+              "name": "purpose",
+              "value": "fine-tune"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1488,
+        0
+      ],
+      "id": "ffc640fb-8ba4-4dae-b958-91e30e76781a",
+      "name": "upload training dataset"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://ai-email-automation.openai.azure.com/openai/fine_tuning/jobs/",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "api-version",
+              "value": "2025-03-01-preview"
+            }
+          ]
+        },
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "api-key",
+              "value": "<YOUR_AZURE_OPENAI_API_KEY>"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "model",
+              "value": "={{ $('get_training_data').last().json.models }}"
+            },
+            {
+              "name": "=training_file",
+              "value": "=gpt-4o-mini-2024-07-18"
+            },
+            {
+              "name": "suffix",
+              "value": "fine-tuned"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1728,
+        0
+      ],
+      "id": "60d6d5bc-706f-40df-8853-f29b4ea80737",
+      "name": "Start Fine Tunning"
+    },
+    {
+      "parameters": {
+        "operation": "write",
+        "fileName": "training_dataset.jsonl",
+        "dataPropertyName": "=",
+        "options": {
+          "append": true
+        }
+      },
+      "type": "n8n-nodes-base.readWriteFile",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        0
+      ],
+      "id": "a5b86d59-68c5-400c-bfc3-e4c066cbc292",
+      "name": "Read/Write Files from Disk"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a4e39148-3b00-439a-812a-d9513ef63e36",
+              "name": "output",
+              "value": "={{ $json.output }}",
+              "type": "array"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        624,
+        0
+      ],
+      "id": "c93dd8db-39bc-4559-af80-ca2dadadd485",
+      "name": "get_messages"
+    },
+    {
+      "parameters": {
+        "jsCode": "let jsonlData = '';\n    for (const item of $input.all()) {\n      if (item.json) {\n        // Stringify the JSON object and add a newline character\n        jsonlData += JSON.stringify(item.json) + '\\n'; \n      }\n    }\n    // Return the combined JSONL string as a binary item\n    return [{ json: {}, binary: { data: Buffer.from(jsonlData, 'utf8') }"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        832,
+        0
+      ],
+      "id": "cd58d5b2-9a35-4735-bc11-70fbb3f96a4f",
+      "name": "jsonl"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Schedule Trigger": {
+      "main": [
+        [
+          {
+            "node": "get_training_data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_training_data": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "get_messages",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "upload training dataset",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "upload training dataset": {
+      "main": [
+        [
+          {
+            "node": "Start Fine Tunning",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Read/Write Files from Disk": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "get_messages": {
+      "main": [
+        [
+          {
+            "node": "jsonl",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "jsonl": {
+      "main": [
+        [
+          {
+            "node": "Read/Write Files from Disk",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "c7ec4a3f-7295-4dee-aad1-35369d914d5a",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "ea68aa92f725604eeaa44d0a6133fc72648a6aad0ed32bd68b46f396c6924195"
+  },
+  "id": "Rj1NGMnFLZLAp2jF",
+  "tags": []
+}

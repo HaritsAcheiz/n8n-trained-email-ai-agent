@@ -1,0 +1,131 @@
+{
+  "name": "Get Shopify Order Info From Order Number",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "orderNumber"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "17235829-eecc-49a2-b6f3-3ea4bccb6715",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "6cc90622-ec0a-42a1-b49b-df24811c9a6b",
+              "name": "data.orders",
+              "value": "={{ $json.data.products }}",
+              "type": "object"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        0
+      ],
+      "id": "26d05dde-0d52-4947-b0d4-7d7134272459",
+      "name": "Return Values"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://magiccars.myshopify.com/admin/api/2025-07/graphql.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Shopify-Access-Token",
+              "value": "<YOUR_SHOPIFY_ACCESS_TOKEN>"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "=    query(\n        $query: String\n    )\n    {\n        orders(first: 1, query: $query) {\n            edges {\n                node {\n                    name\n                    cancellation{\n                        staffNote\n                    }\n                    cancelledAt\n                    cancelReason\n                    closed\n                    closedAt\n                    confirmed\n                    createdAt\n                    currencyCode\n                    currentCartDiscountAmountSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentShippingPriceSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentSubtotalLineItemsQuantity\n                    currentSubtotalPriceSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentTaxLines{\n                        priceSet{\n                            shopMoney{\n                                amount\n                                currencyCode\n                            }\n                        }\n                        rate\n                        title\n                    }\n                    currentTotalAdditionalFeesSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentTotalDiscountsSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentTotalDutiesSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentTotalPriceSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentTotalTaxSet{\n                        shopMoney{\n                            amount\n                            currencyCode\n                        }\n                    }\n                    currentTotalWeight\n                    displayAddress{\n                        address1\n                        address2\n                        city\n                        company\n                        country\n                        countryCodeV2\n                        firstName\n                        lastName\n                        phone\n                        province\n                        zip\n                    }\n                    displayFinancialStatus\n                    displayFulfillmentStatus\n                    email\n                    lineItems(first: 250){\n                        edges{\n                            node{\n                                currentQuantity\n                                name\n                                sku\n                            }\n                        }\n                    }\n                    returnStatus\n                    updatedAt\n                }\n            }\n            pageInfo {\n                endCursor\n                hasNextPage\n            }\n        }\n    }"
+            },
+            {
+              "name": "variables",
+              "value": "={{ {'query': \"name:\" + \"'\" + $json.orderNumber + \"'\"} }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "1cb032b5-d7af-4d4e-a264-ba990c1f13d4",
+      "name": "Get Orders By Order Number"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "orderNumber": "985691414543"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Orders By Order Number",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Orders By Order Number": {
+      "main": [
+        [
+          {
+            "node": "Return Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "1130ea96-d073-4151-9b63-f2288951ab84",
+  "meta": {
+    "instanceId": "ea68aa92f725604eeaa44d0a6133fc72648a6aad0ed32bd68b46f396c6924195"
+  },
+  "id": "V7TtmDnbM5BAqI8D",
+  "tags": []
+}
