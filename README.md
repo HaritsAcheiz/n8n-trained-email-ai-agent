@@ -123,9 +123,14 @@ You can edit the workflows directly in VS Code and sync them to your local n8n i
 Open any JSON file in the `n8n-workflows/` directory.
 
 ### 2. Sync to n8n UI
-After saving your changes in VS Code, run:
+**To sync a specific workflow (e.g., Main):**
 ```bash
 docker exec n8n n8n import:workflow --input=/home/node/workflows/Main.json
+```
+
+**To import ALL workflows at once:**
+```bash
+for f in n8n-workflows/*.json; do docker exec n8n n8n import:workflow --input="/home/node/workflows/$(basename "$f")"; done
 ```
 
 ### 3. Export from n8n UI to VS Code
