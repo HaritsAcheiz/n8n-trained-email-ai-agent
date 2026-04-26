@@ -18,14 +18,15 @@ This project implements an AI-powered Email Agent for customer service automatio
 1.  **Environment Setup**: Create a `.env` file in the root directory based on the requirements in `README.md`.
 2.  **Start Services**:
     ```bash
-    docker-compose up -d
+    docker compose up -d
     ```
     This starts n8n, Postgres, and Qdrant.
 3.  **n8n Configuration**:
     - Access n8n at `http://localhost:5678`.
     - Install the `n8n-nodes-mcp` community node as described in the `README.md`.
-    - Import the `Main.json` workflow.
-    - Configure credentials for Azure OpenAI, Microsoft Outlook, and Postgres within n8n.
+    - **Sync Credentials**: Run `docker exec n8n n8n import:credentials --input=/home/node/workflows/credentials-portable.json` to automatically link n8n to your `.env` variables.
+    - **Sync Workflows**: Run `docker exec n8n n8n import:workflow --input=/home/node/workflows/Main.json`.
+    - Workflows and credentials are automatically mounted from `./n8n-workflows` to `/home/node/workflows` inside the container.
 
 ### Cloud Deployment (Azure)
 The `terraform/` directory contains configuration for deploying to Azure.
@@ -40,13 +41,18 @@ The `terraform/` directory contains configuration for deploying to Azure.
     ```
 
 ## Project Structure
-- `Main.json`: The exported n8n workflow containing the AI Agent logic.
-- `docker-compose.yaml`: Defines the local development environment.
+- `n8n-workflows/`: Directory containing exported n8n workflow JSON files and `credentials-portable.json` for environment-driven setup.
+- `docker-compose.yaml`: Defines the local development environment and passes `.env` variables to n8n.
 - `terraform/`: Azure infrastructure definitions (`main.tf`, `variables.tf`, `output.tf`).
 - `shared/`: Mounted volume for shared data between the host and containers.
 
 ## Development Conventions
-- **Workflow Updates**: When modifying the n8n workflow, ensure you export it back to `Main.json` to keep the repository in sync.
+- **Workflow Updates**: 
+    - **Edit in VS Code**: Modify JSON in `n8n-workflows/`, then sync to n8n: 
+      `docker exec n8n n8n import:workflow --input=/home/node/workflows/<file>.json`
+    - **Edit in UI**: Modify in n8n, then export back to local:
+      `docker exec n8n n8n export:workflow --all --output=/home/node/workflows/`
+- **Credential Portability**: Use **Expression-based Credentials** (e.g., `{{ $env.AI_API_KEY }}`) to ensure the project remains "clone and run" across different environments.
 - **AI Agent Logic**: The system prompt and agent behavior are defined within the "AI Agent" node in `Main.json`.
 - **RAG Implementation**: Knowledge base retrieval is handled via Qdrant nodes within the workflow.
 - **Memory**: Conversation persistence is managed by the "Postgres Chat Memory" node, using `conversationId` as the session key.

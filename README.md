@@ -115,3 +115,30 @@ Email AI agent with auto model training using N8N
 ## Deactivate
 ### 1. docker-compose down for keep volume data presist
 ### 2. docker-compose down -v for permanently clean all volume data
+
+## Advanced Developer Workflow (VS Code Sync)
+You can edit the workflows directly in VS Code and sync them to your local n8n instance.
+
+### 1. Edit in VS Code
+Open any JSON file in the `n8n-workflows/` directory.
+
+### 2. Sync to n8n UI
+After saving your changes in VS Code, run:
+```bash
+docker exec n8n n8n import:workflow --input=/home/node/workflows/Main.json
+```
+
+### 3. Export from n8n UI to VS Code
+If you make changes in the browser and want to save them back to your files:
+```bash
+docker exec n8n n8n export:workflow --all --output=/home/node/workflows/
+```
+
+## Portable Credentials (One-time Setup)
+To make n8n use the credentials from your `.env` file automatically, run this command once after starting the containers:
+
+```bash
+docker exec n8n n8n import:credentials --input=/home/node/workflows/credentials-portable.json
+```
+
+This will create credentials for Azure OpenAI, Airtable, and Outlook that pull their values directly from your environment variables.
