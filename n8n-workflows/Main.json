@@ -50,7 +50,7 @@
       "name": "Azure OpenAI Chat Model",
       "credentials": {
         "azureOpenAiApi": {
-          "id": "OAfJGN7e61BdYSfo",
+          "id": "0r2fiV8XbwM2pcJv",
           "name": "Azure Open AI account"
         }
       }
@@ -85,7 +85,7 @@
       "name": "Postgres Chat Memory",
       "credentials": {
         "postgres": {
-          "id": "vtMkQuhUbHP25x4q",
+          "id": "x0OvkDcw1dzKopwi",
           "name": "Postgres account"
         }
       }
@@ -301,7 +301,7 @@
       "name": "Create email record",
       "credentials": {
         "airtableTokenApi": {
-          "id": "tzB6PMPszCBUCJKa",
+          "id": "4fVYhImzJAu7nMJ6",
           "name": "Airtable Personal Access Token account"
         }
       }
@@ -393,7 +393,7 @@
       "name": "Create to email detail record",
       "credentials": {
         "airtableTokenApi": {
-          "id": "tzB6PMPszCBUCJKa",
+          "id": "4fVYhImzJAu7nMJ6",
           "name": "Airtable Personal Access Token account"
         }
       }
@@ -454,7 +454,7 @@
       "name": "Main Email Received Trigger",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }
@@ -692,7 +692,7 @@
       "name": "Update Agent AI record",
       "credentials": {
         "airtableTokenApi": {
-          "id": "tzB6PMPszCBUCJKa",
+          "id": "4fVYhImzJAu7nMJ6",
           "name": "Airtable Personal Access Token account"
         }
       }
@@ -778,7 +778,7 @@
       "webhookId": "0bcf08ab-5ce5-4f19-86e4-d7a46fcf4164",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }
@@ -815,7 +815,7 @@
       "name": "Search records",
       "credentials": {
         "airtableTokenApi": {
-          "id": "tzB6PMPszCBUCJKa",
+          "id": "4fVYhImzJAu7nMJ6",
           "name": "Airtable Personal Access Token account"
         }
       }
@@ -1114,7 +1114,7 @@
       "webhookId": "2b64c794-38db-4b22-b87d-fe0800c6968e",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }
@@ -1318,7 +1318,7 @@
       "name": "Create attachment email detail record",
       "credentials": {
         "airtableTokenApi": {
-          "id": "tzB6PMPszCBUCJKa",
+          "id": "4fVYhImzJAu7nMJ6",
           "name": "Airtable Personal Access Token account"
         }
       }
@@ -1554,7 +1554,7 @@
       "name": "Create Agent AI record",
       "credentials": {
         "airtableTokenApi": {
-          "id": "tzB6PMPszCBUCJKa",
+          "id": "4fVYhImzJAu7nMJ6",
           "name": "Airtable Personal Access Token account"
         }
       }
@@ -1580,7 +1580,7 @@
       "webhookId": "dbed892b-fa60-41ae-8049-3a2e38d92c4a",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }
@@ -1636,7 +1636,7 @@
       "webhookId": "d454adf0-8b64-4f77-9357-57f8e4893100",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }
@@ -1672,7 +1672,7 @@
       "webhookId": "d7e544d1-3e00-4666-86a5-5dd9c49b1c72",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }
@@ -1703,7 +1703,7 @@
       "webhookId": "d3484d0b-15f4-4821-af60-0159e8442d52",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }
@@ -1729,7 +1729,7 @@
       "webhookId": "9e682788-f987-4887-b89a-d8cd055eb6b6",
       "credentials": {
         "microsoftOutlookOAuth2Api": {
-          "id": "9JO7mB9296REMY7A",
+          "id": "trSM0E9kwFobiX25",
           "name": "techsupport@magiccars.com"
         }
       }

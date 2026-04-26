@@ -3,6 +3,8 @@
 ## Project Overview
 This project implements an AI-powered Email Agent for customer service automation, specifically tailored for "MagicCars.com". It uses **n8n** as the orchestration engine, leveraging its LangChain nodes to create an intelligent agent capable of professional, empathetic, and context-aware email communication.
 
+For a high-level overview of how the system works, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
 ### Core Technologies
 - **n8n**: Workflow automation and AI agent orchestration.
 - **Azure OpenAI**: LLM provider (GPT-4o-mini).

@@ -50,7 +50,7 @@
       "name": "get_training_data",
       "credentials": {
         "airtableTokenApi": {
-          "id": "tzB6PMPszCBUCJKa",
+          "id": "4fVYhImzJAu7nMJ6",
           "name": "Airtable Personal Access Token account"
         }
       }
@@ -101,7 +101,7 @@
           "parameters": [
             {
               "name": "api-key",
-              "value": "<YOUR_AZURE_OPENAI_API_KEY>"
+              "value": "{{ $env.AI_API_KEY }}"
             },
             {
               "name": "Content-Type",
@@ -153,7 +153,7 @@
           "parameters": [
             {
               "name": "api-key",
-              "value": "<YOUR_AZURE_OPENAI_API_KEY>"
+              "value": "{{ $env.AI_API_KEY }}"
             }
           ]
         },
