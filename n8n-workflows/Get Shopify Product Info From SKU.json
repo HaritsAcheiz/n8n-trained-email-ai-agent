@@ -1,0 +1,132 @@
+{
+  "name": "Get Shopify Product Info From SKU",
+  "nodes": [
+    {
+      "parameters": {
+        "workflowInputs": {
+          "values": [
+            {
+              "name": "variantSku"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.executeWorkflowTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        0,
+        0
+      ],
+      "id": "39309dff-b2a6-4474-b7ad-333b9bbb5c7e",
+      "name": "When Executed by Another Workflow"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://magiccars.myshopify.com/admin/api/2025-07/graphql.json",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "X-Shopify-Access-Token",
+              "value": "<YOUR_SHOPIFY_ACCESS_TOKEN>"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "query",
+              "value": "=query(\n    $query: String\n)\n{\n    products(first: 3, query: $query) {\n        edges {\n            node {\n                handle\n                id\n                title\n                description\n                variants(first: 20){\n                    nodes{\n                        compareAtPrice\n                        displayName\n                        inventoryItem{\n                            sku\n                        }\n                        inventoryQuantity\n                        price\n\n                    }\n                }\n            }\n        }\n        pageInfo {\n            endCursor\n            hasNextPage\n        }\n    }\n}"
+            },
+            {
+              "name": "variables",
+              "value": "={{ {'query': \"sku:\" + \"'\" + $json.variantSku + \"'\"} }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        224,
+        0
+      ],
+      "id": "f303ab88-b023-4d26-abb0-1d2f61636648",
+      "name": "Get Products by SKU"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "64ecc7fa-b518-4ff8-8adf-92886a6a7df6",
+              "name": "data.products",
+              "value": "={{ $json.data.products }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        480,
+        0
+      ],
+      "id": "ec6112dd-817e-4451-9f78-9728b0b7650c",
+      "name": "Return Values"
+    }
+  ],
+  "pinData": {
+    "When Executed by Another Workflow": [
+      {
+        "json": {
+          "variantSku": "25-60988",
+          "sessionId": "AQQkADAwATMwMAItN2E2Yi1iYWZhLTAwAi0wMAoAEACyxmjWIXgbSrnCYkNjQDY_"
+        }
+      }
+    ]
+  },
+  "connections": {
+    "When Executed by Another Workflow": {
+      "main": [
+        [
+          {
+            "node": "Get Products by SKU",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Products by SKU": {
+      "main": [
+        [
+          {
+            "node": "Return Values",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "9ffebbe9-845a-4fee-aa41-00ea361a011a",
+  "meta": {
+    "instanceId": "ea68aa92f725604eeaa44d0a6133fc72648a6aad0ed32bd68b46f396c6924195"
+  },
+  "id": "w4CoKE36KGfVUpfK",
+  "tags": []
+}

@@ -13,10 +13,6 @@ services:
       - DB_POSTGRESDB_HOST=postgres
       - DB_POSTGRESDB_USER=${POSTGRES_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
-
-      # For Production
-      # - N8N_BASE_URL=https://<your domain or sub-domain>/
-
       - N8N_PORT=5678
       - N8N_DIAGNOSTICS_ENABLED=false
       - N8N_PERSONALIZATION_ENABLED=false
@@ -26,9 +22,20 @@ services:
       - N8N_COMMUNITY_PACKAGES_ALLOW_TOOL_USAGE=true
       - N8N_RUNNERS_ENABLED=true
       - N8N_ENFORCE_SETTINGS_FILE_PERMISSIONS=true
+      # Custom Env Vars for Credentials
+      - AI_API_KEY
+      - AI_RESOURCE_NAME
+      - AI_ENDPOINT
+      - AI_API_VERSION
+      - AI_DEPLOYMENT_NAME
+      - AIRTABLE_ACCESS_TOKEN
+      - MAIN_MS_APP_CLIENT_ID
+      - MAIN_MS_APP_SECRET
+      - SHOPIFY_ACCESS_TOKEN
     volumes:
       - n8n_data:/home/node/.n8n
       - ./shared:/data/shared
+      - ./n8n-workflows:/home/node/workflows
     env_file:
       - .env
 
