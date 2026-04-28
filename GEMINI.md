@@ -26,7 +26,7 @@ For a high-level overview of how the system works, see [docs/ARCHITECTURE.md](do
 3.  **n8n Configuration**:
     - Access n8n at `http://localhost:5678`.
     - Install the `n8n-nodes-mcp` community node as described in the `README.md`.
-    - **Sync Credentials**: Run `docker exec n8n n8n import:credentials --input=/home/node/workflows/credentials-portable.json` to automatically link n8n to your `.env` variables.
+    - **Sync Credentials**: Run `docker exec n8n n8n import:credentials --input=/home/node/workflows/credentials-portable.json` to automatically link n8n to your `.env` variables for Azure, Airtable, Outlook, Qdrant, and Postgres.
     - **Sync Workflows**: Run `docker exec n8n n8n import:workflow --input=/home/node/workflows/Main.json`.
     - Workflows and credentials are automatically mounted from `./n8n-workflows` to `/home/node/workflows` inside the container.
 

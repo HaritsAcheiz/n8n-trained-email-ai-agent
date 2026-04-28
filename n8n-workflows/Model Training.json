@@ -166,7 +166,7 @@
             },
             {
               "name": "=training_file",
-              "value": "=gpt-4o-mini-2024-07-18"
+              "value": "={{ $env.AI_DEPLOYMENT_NAME }}"
             },
             {
               "name": "suffix",
