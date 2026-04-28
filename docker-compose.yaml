@@ -28,10 +28,13 @@ services:
       - AI_ENDPOINT
       - AI_API_VERSION
       - AI_DEPLOYMENT_NAME
+      - AI_EMBEDDING_DEPLOYMENT_NAME
       - AIRTABLE_ACCESS_TOKEN
       - MAIN_MS_APP_CLIENT_ID
       - MAIN_MS_APP_SECRET
       - SHOPIFY_ACCESS_TOKEN
+      - QDRANT_API_KEY
+      - QDRANT_URL
     volumes:
       - n8n_data:/home/node/.n8n
       - ./shared:/data/shared

@@ -37,7 +37,7 @@
     },
     {
       "parameters": {
-        "model": "magiccars-gpt-4o-mini",
+        "model": "={{ $env.AI_DEPLOYMENT_NAME }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
@@ -117,7 +117,7 @@
     },
     {
       "parameters": {
-        "model": "magiccars-gpt-4o-mini",
+        "model": "={{ $env.AI_DEPLOYMENT_NAME }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.lmChatAzureOpenAi",
@@ -161,7 +161,7 @@
     },
     {
       "parameters": {
-        "deploymentName": "text-embedding-3-small",
+        "model": "={{ $env.AI_EMBEDDING_DEPLOYMENT_NAME }}",
         "options": {}
       },
       "type": "@n8n/n8n-nodes-langchain.embeddingsAzureOpenAi",
@@ -1605,7 +1605,7 @@
     },
     {
       "parameters": {
-        "jsCode": "// A new array to hold the output items\nconst outputItems = [];\n\n// Loop over all input items\nfor (const item of $input.all()) {\n    // Check if the required path exists to avoid errors\n    if (item.json.intermediateSteps?.[0]?.action?.toolInput) {\n        // Create a new object for the output, selecting only the fields you want\n        const newItem = {\n            json: {\n              toolArgument: item.json.intermediateSteps[0].action.toolInput.variantSku,\n              argumentType: Object.keys(item.json.intermediateSteps[0].action.toolInput)[0],\n              agentResponse: item.json.output,\n              toolName: item.json.intermediateSteps[0].action.tool,\n              toolCallId: item.json.intermediateSteps[0].action.toolCallId,\n              toolCallType: item.json.intermediateSteps[0].action.messageLog[0].kwargs.additional_kwargs.tool_calls[0].type,\n              models: item.json.intermediateSteps[0].action.messageLog[0].kwargs.response_metadata.model_name,\n              toolOutput: item.json.intermediateSteps[0].observation\n            }\n        };\n\n        // Push the new item to our output array\n        outputItems.push(newItem);\n    }\n    else {\n      const newItem = {\n            json: {\n              toolArgument: '',\n              argumentType: 'none',\n              agentResponse: item.json.output,\n              toolName: '',\n              toolCallId: '',\n              toolCallType: '',\n              models: 'gpt-4o-mini-2024-07-18',\n              toolOutput: ''\n            }\n        };\n\n        // Push the new item to our output array\n        outputItems.push(newItem);\n    }\n}\n\nreturn outputItems;\n"
+        "jsCode": "// A new array to hold the output items\nconst outputItems = [];\n\n// Loop over all input items\nfor (const item of $input.all()) {\n    // Check if the required path exists to avoid errors\n    if (item.json.intermediateSteps?.[0]?.action?.toolInput) {\n        // Create a new object for the output, selecting only the fields you want\n        const newItem = {\n            json: {\n              toolArgument: item.json.intermediateSteps[0].action.toolInput.variantSku,\n              argumentType: Object.keys(item.json.intermediateSteps[0].action.toolInput)[0],\n              agentResponse: item.json.output,\n              toolName: item.json.intermediateSteps[0].action.tool,\n              toolCallId: item.json.intermediateSteps[0].action.toolCallId,\n              toolCallType: item.json.intermediateSteps[0].action.messageLog[0].kwargs.additional_kwargs.tool_calls[0].type,\n              models: item.json.intermediateSteps[0].action.messageLog[0].kwargs.response_metadata.model_name,\n              toolOutput: item.json.intermediateSteps[0].observation\n            }\n        };\n\n        // Push the new item to our output array\n        outputItems.push(newItem);\n    }\n    else {\n      const newItem = {\n            json: {\n              toolArgument: '',\n              argumentType: 'none',\n              agentResponse: item.json.output,\n              toolName: '',\n              toolCallId: '',\n              toolCallType: '',\n              models: 'magiccars-gpt-4o-mini',\n              toolOutput: ''\n            }\n        };\n\n        // Push the new item to our output array\n        outputItems.push(newItem);\n    }\n}\n\nreturn outputItems;\n"
       },
       "type": "n8n-nodes-base.code",
       "typeVersion": 2,
